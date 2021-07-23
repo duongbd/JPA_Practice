@@ -12,14 +12,11 @@
     <title>Title</title>
 </head>
 <body>
-<%--<ol>--%>
-<%--    <c:forEach var="emp" items="${list}">--%>
+<ol>
+    <c:forEach var="emp" items="${list}">
+        <a href="http://localhost:8080/blog/${emp.id}">${emp.title}</a>
+    </c:forEach>
+</ol>
 
-<%--        <li>${emp.content}</li>--%>
-<%--        <br>--%>
-
-<%--    </c:forEach>--%>
-<%--</ol>--%>
-<h2>${demo}</h2>
 </body>
 </html>

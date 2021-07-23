@@ -3,13 +3,11 @@ package controller;
 import model.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import repository.BlogRepository;
+
+import org.springframework.web.bind.annotation.PathVariable;
 import services.BlogService;
 
 import java.util.List;
@@ -18,13 +16,19 @@ import java.util.List;
 
 public class BlogController {
     @Autowired
+    //@Qualifier("blogService")
     private BlogService blogService;
 
     @GetMapping("/home")
     public String getHome(ModelMap modelMap) {
-        Blog blog= blogService.getId(1);
-        //modelMap.addAttribute("list", blogList);
+        List<Blog> blogList=blogService.getAllBlog();
+        modelMap.addAttribute("list", blogList);
         modelMap.addAttribute("demo", "demo");
         return "home";
+    }
+    @GetMapping("/{id}")
+    public String getBlog(ModelMap modelMap, @PathVariable Integer id) {
+        modelMap.addAttribute("list", blogService.getId(id));
+        return "detail";
     }
 }

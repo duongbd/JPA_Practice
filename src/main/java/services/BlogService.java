@@ -2,12 +2,12 @@ package services;
 
 import model.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import repository.BlogRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BlogService {
@@ -19,7 +19,7 @@ public class BlogService {
         return blogRepository.findAll();
     }
 
-    public Blog getId(Integer id){
-        return blogRepository.getOne(id);
+    public Optional<Blog> getId(Integer id){
+        return blogRepository.findById(id);
     }
 }

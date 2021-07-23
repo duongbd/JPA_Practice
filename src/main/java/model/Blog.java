@@ -59,4 +59,8 @@ public class Blog {
     public void setWriter(String writer) {
         this.writer = writer;
     }
+
+    public Integer getId() {
+        return id;
+    }
 }
