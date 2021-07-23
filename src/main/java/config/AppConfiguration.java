@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import repository.BlogRepository;
 import services.BlogService;
 
 import javax.persistence.EntityManager;
@@ -33,7 +34,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-@EnableSpringDataWebSupport
+
 @ComponentScan("controller")
 @EnableJpaRepositories("repository")
 @EnableTransactionManagement
