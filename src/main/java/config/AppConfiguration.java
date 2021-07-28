@@ -1,5 +1,6 @@
 package config;
 
+import model.Category;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import repository.BlogRepository;
 import services.BlogService;
+import services.CategoryService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -50,7 +52,7 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
     public InternalResourceViewResolver resourceViewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setApplicationContext(applicationContext);
-        viewResolver.setPrefix("WEB-INF/views/");
+        viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
@@ -58,6 +60,11 @@ public class AppConfiguration implements ApplicationContextAware, WebMvcConfigur
     @Bean(name = "blogService")
     public BlogService blogService(){
         return new BlogService();
+    }
+
+    @Bean(name = "categoryService")
+    public CategoryService categoryService(){
+        return new CategoryService();
     }
 
     @Bean

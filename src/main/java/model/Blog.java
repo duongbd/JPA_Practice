@@ -1,7 +1,9 @@
 package model;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 @Entity
 @Table(name = "blog")
@@ -13,12 +15,23 @@ public class Blog {
     private String title;
     @Column
     private String content;
-    @Column
-    private Date date_create;
-    @Column
-    private Date last_modify;
+    @Column(name="date_create")
+    private Date dateCreate;
+    @Column(name="last_modify")
+    private Date lastModify;
     @Column
     private String writer;
+    @ManyToOne
+    @JoinColumn(name="category_id", nullable=true)
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public String getTitle() {
         return title;
@@ -36,20 +49,21 @@ public class Blog {
         this.content = content;
     }
 
-    public Date getDate_create() {
-        return date_create;
+    public String getDateCreate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        return formatter.format(dateCreate);
     }
 
-    public void setDate_create(Date date_create) {
-        this.date_create = date_create;
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
-    public Date getLast_modify() {
-        return last_modify;
+    public Date getLastModify() {
+        return lastModify;
     }
 
-    public void setLast_modify(Date last_modify) {
-        this.last_modify = last_modify;
+    public void setLastModify(Date last_modify) {
+        this.lastModify = last_modify;
     }
 
     public String getWriter() {

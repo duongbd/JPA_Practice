@@ -17,12 +17,8 @@
 <h3>${list.title}</h3>
 <form action="/modify/${list.id}" method="post">
     <textarea name="content" style="height: 300px;width: 70%">${list.content}</textarea><br>
+    <p>Writer: ${list.writer}</p><br>
     <input type="submit" value="modify">
-</form>
-<p>Writer: ${list.writer}</p>
-<form>
-<input type="submit" value="delete" formaction="/delete/${list.id}" formmethod="post">
-<input type="submit" value="back" formaction="/" formmethod="get">
 </form>
 </body>
 </html>

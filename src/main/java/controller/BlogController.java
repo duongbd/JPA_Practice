@@ -1,45 +1,37 @@
 package controller;
 
 import model.Blog;
+import model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import services.BlogService;
+import services.CategoryService;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
-
+@RequestMapping("/blog")
 public class BlogController {
     @Autowired
     //@Qualifier("blogService")
     private BlogService blogService;
-
-    @GetMapping("/")
-    public String getHome(ModelMap modelMap) {
-        List<Blog> blogList = blogService.getAllBlog();
-        blogList.sort(Comparator.comparing(Blog::getDate_create));
-        modelMap.addAttribute("list", blogList);
-        return "home";
-    }
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping("/{id}")
     public String getBlog(ModelMap modelMap, @PathVariable Integer id) {
-        Blog blog = blogService.getId(id);
+        Blog blog = blogService.getById(id);
         modelMap.addAttribute("list", blog);
-        return "detail";
+        return "detail_blog";
     }
 
-    @PostMapping("/delete/{id}")
-    public String delBlog(ModelMap modelMap, @PathVariable Integer id) {
-        blogService.delBlogById(id);
-        return "redirect:/";
+    @PostMapping("/delete/{blogId}")
+    public String deleteBlog(ModelMap modelMap, @PathVariable Integer blogId) {
+        blogService.delBlogById(blogId);
+        return "delete_success";
     }
 
     @PostMapping("/modify/{id}")
@@ -49,19 +41,34 @@ public class BlogController {
     }
 
     @PostMapping(value = "/newBlog")
-    public String saveBlog(@RequestParam String title,@RequestParam String content,@RequestParam String writer) {
-        System.out.println(title);
-        Blog blog=new Blog();
+    public String saveBlog(ModelMap modelMap,@RequestParam String title, @RequestParam String content, @RequestParam String writer, @RequestParam String nameCategory) {
+        Blog blog = new Blog();
         blog.setContent(content);
         blog.setTitle(title);
         blog.setWriter(writer);
-        blog.setLast_modify(new Date());
-        blog.setDate_create(new Date());
+        blog.setLastModify(new Date());
+        blog.setDateCreate(new Date());
+        System.out.println(nameCategory);
+        Category category=categoryService.getCategoryByName(nameCategory);
+        if (nameCategory.equals("")) {blog.setCategory(null);}
+        else {
+            if (category != null) blog.setCategory(category);
+            else {
+                modelMap.addAttribute("err", "Category not found so we cant save blog");
+                return "new_blog";
+            }
+        }
         blogService.saveBlog(blog);
-        return "redirect:/";
+        return "redirect:/category/"+ nameCategory+"/1";
     }
+
     @GetMapping(value = "/newBlog")
-    public String newBlog(){
-        return "new";
+    public String newBlog() {
+        return "new_blog";
+    }
+
+    @ModelAttribute("categoryList")
+    public List<Category> getCategoryList() {
+        return categoryService.getListCategory();
     }
 }
